@@ -46,7 +46,7 @@ func main() {
 	} {
 		router.GET(path, ginSwagger.WrapHandler(swaggerfiles.Handler))
 	}
-	router.GET("/youtube/subscriptions/:token", CORS, Limiter{}.mw(1, 30*time.Second), API{}.youtubeSubscriptions)
+	router.GET("/youtube/subscriptions/:token", CORS, Limiter{}.mw(1, 60*time.Second), API{}.youtubeSubscriptions)
 	router.GET("/youtube/download/:type/:id", CORS, Limiter{}.mw(4, 30*time.Second), API{}.youtubeDownload)
 	router.GET("/webconnect/new/:channel", CORS, Limiter{}.mw(4, 30*time.Second), API{}.newWS)
 	router.GET("/webconnect/connect/:id", CORS, Limiter{}.mw(4, 30*time.Second), API{}.connectWS)
