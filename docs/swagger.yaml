@@ -1,0 +1,161 @@
+basePath: /v3
+definitions:
+  main.SubscriptionsResult:
+    properties:
+      subscriptions:
+        items:
+          $ref: '#/definitions/youtube.VideoContent'
+        type: array
+    type: object
+  youtube.VideoContent:
+    properties:
+      author_name:
+        type: string
+      published_date:
+        type: string
+      video_id:
+        type: string
+      video_title:
+        type: string
+    type: object
+host: api.arfevrier.fr
+info:
+  contact: {}
+  title: API arfevrier.fr
+  version: "3.0"
+paths:
+  /bitcoin/price:
+    get:
+      consumes:
+      - application/json
+      description: Fetch the current Bitcoin price from an blockchain.info API
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: API result
+          schema:
+            type: string
+        "500":
+          description: Failed to fetch Bitcoin price
+          schema:
+            type: string
+      summary: Get Bitcoin price
+      tags:
+      - bitcoin
+  /webconnect/connect/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Connect to an existing WebSocket by ID
+      parameters:
+      - description: WebSocket ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Connection established
+          schema:
+            type: string
+        "400":
+          description: Invalid input
+          schema:
+            type: string
+      summary: Connect to an existing WebSocket
+      tags:
+      - webconnect
+  /webconnect/new/{channel}:
+    get:
+      consumes:
+      - application/json
+      description: Create a new WebSocket connection for a given channel
+      parameters:
+      - description: Channel
+        in: path
+        name: channel
+        required: true
+        type: string
+      - description: Local description for WebRTC
+        in: query
+        name: localdesc
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: WebSocket connection established
+          schema:
+            type: string
+        "400":
+          description: Invalid input
+          schema:
+            type: string
+      summary: Create a new WebSocket connection
+      tags:
+      - webconnect
+  /youtube/download/{type}/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Download a YouTube video or audio file by type and ID
+      parameters:
+      - description: Type (video or audio)
+        in: path
+        name: type
+        required: true
+        type: string
+      - description: Video ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/octet-stream
+      responses:
+        "200":
+          description: File stream
+          schema:
+            type: string
+        "400":
+          description: Invalid input
+          schema:
+            type: string
+      summary: Download YouTube video or audio
+      tags:
+      - youtube
+  /youtube/subscriptions/{token}:
+    get:
+      consumes:
+      - application/json
+      description: Fetch a list of YouTube subscription videos for a given token
+      parameters:
+      - description: Token
+        in: path
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.SubscriptionsResult'
+        "400":
+          description: Invalid input
+          schema:
+            type: string
+        "500":
+          description: No content found for this token
+          schema:
+            type: string
+      summary: Get YouTube subscriptions
+      tags:
+      - youtube
+schemes:
+- https
+swagger: "2.0"
